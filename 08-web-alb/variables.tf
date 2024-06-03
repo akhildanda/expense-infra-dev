@@ -11,7 +11,7 @@ variable "common_tags" {
         Project = "expense"
         Environment = "dev"
         Terraform = "true"
-        Component = "app-alb"
+        Component = "web-alb"
     }
 }
 
