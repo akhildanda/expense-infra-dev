@@ -164,7 +164,7 @@ resource "null_resource" "backend" {
 }
 
     resource "aws_lb_listener_rule" "backend" {
-    listener_arn = data.aws_ssm_parameter.app_alb_listener_arn.value
+    listener_arn = data.aws_ssm_parameter.app-alb_listener_arn.value
     priority     = 100 # less number will be first validated
 
     action {

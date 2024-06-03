@@ -2,15 +2,11 @@
   sg:
   - expense-dev-db
   - expense-dev-backend
-  - expense-dev-frontend
-  - expense-dev-bastion
   - expense-dev-app-alb # backend application-load-balancer
+  - expense-dev-frontend
+  - expense-dev-web-alb
+  - expense-dev-bastion
   - expense-dev-vpn
-  expense-dev-vpn:
-  - name: vpn_public
-    desc: vpn accepting connections from public
-    source: public
-    port: 943, 443, 22, 1194
   db:
   - name: db_backend
     desc: db accepting connections from backend
@@ -24,11 +20,6 @@
     desc: db accepting connections from vpn
     source: vpn
     port: 3306
-  app-alb:
-  - name: app-alb_vpn
-    desc: app-alb accepting connections from VPN
-    source: vpn
-    port: 80
   backend:
   - name: backend_app-alb
     desc: backend accepting connections from app-alb
@@ -46,15 +37,46 @@
     desc: backend accepting connections from VPN
     source: vpn
     port: 8080
+  app-alb:
+  - name: app-alb_vpn
+    desc: app-alb accepting connections from VPN
+    source: vpn
+    port: 80
+    - name: app-alb_frontend
+    desc: app alb accepting connections from frontend instances
+    source: frontend
+    port: 80
+  - name: app-alb_bastion
+    desc: app alb accepting connections from bastion instances
+    source: frontend
+    port: 80
   frontend:
-  - name: frontend_public
-    desc: frontend accepting connections from public
-    source: public
+  - name: frontend_web-alb
+    desc: frontend accepting connections from web ALB
+    source: web-alb
     port: 80
   - name: frontend_bastion
     desc: frontend accepting connections from bastion
     source: bastion
     port: 22
+  - name: frontend_vpn
+    desc: frontend accepting connections from vpn
+    source: vpn
+    port: 22
+  web_alb:
+  - name: web-alb_public
+    desc: web alb accepting connections from public
+    source: public
+    port: 80
+  - name: web-alb_public_https
+    desc: web alb accepting connections from public
+    source: public
+    port: 443
+  vpn:
+  - name: vpn_public
+    desc: vpn accepting connections from public
+    source: public
+    port: 943, 443, 22, 1194
   bastion:
   - name: bastion_public
     desc: bastion accepting connections from public
