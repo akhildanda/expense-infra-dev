@@ -15,18 +15,26 @@ pipeline {
                 cd 01-vpc
                 terraform init -reconfigure
                 """
-                
             }
         }
         stage('Plan') {
             steps {
-                sh 'echo this is Test'
-                sh 'sleep 10'
+                sh """
+                cd 01-vpc
+                terraform plan
+                """
             }
         }
         stage('Deploy') {
+            input {
+                message "should we go forward?"
+                ok "Yes, we should."
+            }
             steps {
-                sh 'echo this is Deploy'
+                sh """
+                cd 01-vpc
+                terraform apply -auto-approve
+                """
             }
         }
     }
